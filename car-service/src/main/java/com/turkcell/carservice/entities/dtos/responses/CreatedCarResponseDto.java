@@ -15,5 +15,6 @@ public class CreatedCarResponseDto {
     private String brand;
     private String model;
     private String colour;
-    private LocalDate modelYear;
+    private short modelYear;
+    private Boolean state;
 }

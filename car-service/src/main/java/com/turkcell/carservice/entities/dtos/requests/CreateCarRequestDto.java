@@ -12,10 +12,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class CreateCarRequestDto {
+    private String inventoryCode;
     private String brand;
     private String model;
     private String colour;
     private short modelYear;
     private Double dailyPrice;
+    private Boolean state;
 
 }

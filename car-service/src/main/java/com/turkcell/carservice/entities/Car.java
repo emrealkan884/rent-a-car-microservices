@@ -16,11 +16,13 @@ import java.time.LocalDate;
 @Document(value = "cars")
 public class Car {
     @Id
-    private String id;
+    private String objectId;
+    private String inventoryCode;
     private String brand;
     private String model;
     private String colour;
     private short modelYear;
     private Double dailyPrice;
     private String photo;
+    private Boolean state;
 }

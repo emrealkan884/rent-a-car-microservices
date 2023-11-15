@@ -8,5 +8,10 @@ import java.util.List;
 
 public interface CarService {
     void add(CreateCarRequestDto request);
+    void update(String inventoryCode,CreateCarRequestDto request);
+    void delete(String inventoryCode);
     List<Car> getAll();
+    Car getByInventoryCode(String inventoryCode);
+
+    Boolean getStateByInventoryCode(String inventoryCode);
 }
