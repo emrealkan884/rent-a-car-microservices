@@ -1,6 +1,7 @@
-package com.turkcell.rentalservice.services.abstracts;
+package com.turkcell.rentalservice.services.concretes;
 
 import com.turkcell.rentalservice.repositories.RentalRepository;
+import com.turkcell.rentalservice.services.abstracts.RentalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
