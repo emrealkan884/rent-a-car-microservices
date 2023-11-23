@@ -12,6 +12,7 @@
         <module name="rental-service" />
         <module name="discovery-server" />
         <module name="car-service" />
+        <module name="customer-service" />
       </profile>
     </annotationProcessing>
   </component>
@@ -19,6 +20,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
       <module name="car-service" options="-parameters" />
+      <module name="customer-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="rental-service" options="-parameters" />
       <module name="test-service" options="-parameters" />

@@ -1,45 +1,43 @@
 services:
+  discovery-server:
+    build: ./discovery-server
+    ports:
+      - 8761:8761
+    depends_on:
+      - keycloak
+
   api-gateway:
-    image: rent-a-car-api-gateway
+    build: ./api-gateway
     ports:
       - 9999:9999
     environment:
       - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka
     depends_on:
       - discovery-server
-      - keycloak
-
-  discovery-server:
-    image: rent-a-car-discovery-server
-    ports:
-      - 8761:8761
-    environment:
-      - eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka
-    mem_limit: 700m
 
   car-service:
-    image: rent-a-car-car-service
+    build: ./car-service
     ports:
       - 6002:6002
     environment:
       - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka
       - spring.data.mongodb.uri=mongodb://root:root@mongodb:27017/car-service?authSource=admin
-    mem_limit: 700m
     depends_on:
       - discovery-server
       - mongodb
+      - api-gateway
 
   rental-service:
-    image: rent-a-car-rental-service
+    build: ./rental-service
     ports:
       - 6001:6001
     environment:
       - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka
       - spring.datasource.url=jdbc:postgresql://postgres:5432/rental-service
-    mem_limit: 700m
     depends_on:
       - discovery-server
       - postgres
+      - api-gateway
 
   mongodb:
     image: mongo
@@ -52,10 +50,12 @@ services:
 
   postgres:
     image: postgres
+    restart: always
     environment:
       POSTGRES_DB: rental-service
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 12345
+      POSTGRES_INITDB_ARGS: "--locale=en_US.utf8"
     ports:
       - 5432:5432
 
@@ -63,7 +63,6 @@ services:
     image: quay.io/keycloak/keycloak
     ports:
       - 8080:8080
-    mem_limit: 700m
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
