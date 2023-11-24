@@ -40,7 +40,10 @@ public class ImageManager implements ImageService {
         return ResponseEntity.badRequest().build();
       }
       Car car = carService.getByInventoryCode(inventoryCode);
-      List<Image> images = new ArrayList<>();
+      List<Image> images = carService.getImagesByInventoryCode(inventoryCode);
+      if (images == null) {
+        images = new ArrayList<>();
+      }
       images.add(image);
       car.setImages(images);
       carRepository.save(car);
