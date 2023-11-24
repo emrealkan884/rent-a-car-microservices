@@ -38,8 +38,8 @@ public class CarsController {
     return carService.getByInventoryCode(inventoryCode);
   }
 
-  @GetMapping("/getState")
-  public Boolean getState(@RequestParam String inventoryCode) {
+  @GetMapping("/getStateByInventoryCode")
+  public Boolean getStateByInventoryCode(@RequestParam String inventoryCode) {
     return carService.getStateByInventoryCode(inventoryCode);
   }
 

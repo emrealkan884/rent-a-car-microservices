@@ -1,8 +1,8 @@
 package com.turkcell.customerservice.services.abstracts;
 
-import com.turkcell.customerservice.entities.dtos.auth.AuthenticationResponse;
-import com.turkcell.customerservice.entities.dtos.auth.RegisterRequest;
+import com.turkcell.customerservice.entities.dtos.CustomerAddRequest;
+import com.turkcell.customerservice.entities.dtos.CustomerAddResponse;
 
 public interface CustomerService {
-  AuthenticationResponse register(RegisterRequest request);
+  CustomerAddResponse register(CustomerAddRequest request);
 }

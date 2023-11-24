@@ -1,5 +1,14 @@
 package com.turkcell.customerservice.entities.dtos;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class CustomerAddResponse {
   private Integer id;
   private String name;
