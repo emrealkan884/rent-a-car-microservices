@@ -8,7 +8,6 @@ import com.turkcell.carservice.services.abstracts.CarService;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 public class CarManager implements CarService {
 
   private final CarRepository carRepository;
-  private final KafkaTemplate<String, String> kafkaTemplate;
 
   @Override
   public void add(CreateCarRequestDto request) {
@@ -66,7 +64,6 @@ public class CarManager implements CarService {
   @Override
   public Boolean getStateByInventoryCode(String inventoryCode) {
     Car car = getByInventoryCode(inventoryCode);
-    kafkaTemplate.send("notificationTopic", " Arac durumu gosterildi..");
     if (car != null) {
       return car.getState();
     }
@@ -76,5 +73,19 @@ public class CarManager implements CarService {
   public List<Image> getImagesByInventoryCode(String inventoryCode) {
     Car car = getByInventoryCode(inventoryCode);
     return car.getImages();
+  }
+
+  @Override
+  public Double getDailyPriceByInventoryCode(String inventoryCode) {
+    Car car = getByInventoryCode(inventoryCode);
+    return car.getDailyPrice();
+  }
+
+  @Override
+  public Boolean updateState(String inventoryCode, Boolean state) {
+    Car car = getByInventoryCode(inventoryCode);
+    car.setState(state);
+    car = carRepository.save(car);
+    return car.getState();
   }
 }

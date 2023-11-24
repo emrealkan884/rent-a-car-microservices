@@ -22,6 +22,7 @@ public class CustomerManager implements CustomerService {
             .username(request.getUsername())
             .lastName(request.getLastName())
             .password(request.getPassword())
+            .balance(0)
             .build();
     customerRepository.save(customer);
     CustomerAddResponse customerAddResponse =
@@ -33,5 +34,27 @@ public class CustomerManager implements CustomerService {
             .username(customer.getUsername())
             .build();
     return customerAddResponse;
+  }
+
+  @Override
+  public double getBalanceByCustomerId(int customerId) {
+    Customer customer = customerRepository.getReferenceById(customerId);
+    return customer.getBalance();
+  }
+
+  @Override
+  public double balanceUp(int customerId, double balance) {
+    Customer customer = customerRepository.getReferenceById(customerId);
+    customer.setBalance(customer.getBalance() + balance);
+    customer = customerRepository.save(customer);
+    return customer.getBalance();
+  }
+
+  @Override
+  public double balanceDown(int customerId, double balance) {
+    Customer customer = customerRepository.getReferenceById(customerId);
+    customer.setBalance(customer.getBalance() - balance);
+    customer = customerRepository.save(customer);
+    return customer.getBalance();
   }
 }

@@ -43,6 +43,16 @@ public class CarsController {
     return carService.getStateByInventoryCode(inventoryCode);
   }
 
+  @GetMapping("/getDailyPriceByInventoryCode")
+  public Double getDailyPriceByInventoryCode(@RequestParam String inventoryCode) {
+    return carService.getDailyPriceByInventoryCode(inventoryCode);
+  }
+
+  @PostMapping("/updateState")
+  public Boolean updateState(@RequestParam String inventoryCode, @RequestParam Boolean state) {
+    return carService.updateState(inventoryCode, state);
+  }
+
   @GetMapping("/deneme")
   public String deneme() {
     return "Deneme";

@@ -14,7 +14,7 @@ public class RentalsController {
   private final RentalService rentalService;
 
   @GetMapping("/submitRental")
-  public String submitRental(@RequestParam String inventoryCode) {
-    return rentalService.submitRental(inventoryCode);
+  public String submitRental(@RequestParam String inventoryCode, @RequestParam int customerId) {
+    return rentalService.submitRental(inventoryCode, customerId);
   }
 }
