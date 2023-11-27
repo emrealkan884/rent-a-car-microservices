@@ -3,8 +3,12 @@ package com.turkcell.customerservice.services.concretes;
 import com.turkcell.customerservice.entities.Customer;
 import com.turkcell.customerservice.entities.dtos.CustomerAddRequest;
 import com.turkcell.customerservice.entities.dtos.CustomerAddResponse;
+import com.turkcell.customerservice.entities.dtos.CustomerUpdateRequest;
+import com.turkcell.customerservice.entities.dtos.GetCustomerDto;
 import com.turkcell.customerservice.repositories.CustomerRepository;
 import com.turkcell.customerservice.services.abstracts.CustomerService;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +38,55 @@ public class CustomerManager implements CustomerService {
             .username(customer.getUsername())
             .build();
     return customerAddResponse;
+  }
+
+  @Override
+  public void delete(int id) {
+    customerRepository.deleteById(id);
+  }
+
+  @Override
+  public GetCustomerDto update(int id, CustomerUpdateRequest request) {
+    Customer customer = customerRepository.getReferenceById(id);
+    customer.setName(request.getName());
+    customer.setEmail(request.getEmail());
+    customer.setPassword(request.getPassword());
+    customer.setLastName(request.getLastName());
+    customer.setUsername(request.getUsername());
+    customerRepository.save(customer);
+    GetCustomerDto getCustomerDto =
+        GetCustomerDto.builder()
+            .username(customer.getUsername())
+            .name(customer.getName())
+            .lastName(customer.getLastName())
+            .build();
+    return getCustomerDto;
+  }
+
+  @Override
+  public GetCustomerDto getById(int id) {
+    Customer customer = customerRepository.getReferenceById(id);
+    GetCustomerDto getCustomerDto =
+        GetCustomerDto.builder()
+            .username(customer.getUsername())
+            .name(customer.getName())
+            .lastName(customer.getLastName())
+            .build();
+    return getCustomerDto;
+  }
+
+  @Override
+  public List<GetCustomerDto> getAll() {
+    List<Customer> customers = customerRepository.findAll();
+    List<GetCustomerDto> getCustomerDtos = new ArrayList<>();
+    GetCustomerDto getCustomerDto = new GetCustomerDto();
+    for (Customer customer : customers) {
+      getCustomerDto.setUsername(customer.getUsername());
+      getCustomerDto.setName(customer.getName());
+      getCustomerDto.setLastName(customer.getLastName());
+      getCustomerDtos.add(getCustomerDto);
+    }
+    return getCustomerDtos;
   }
 
   @Override
