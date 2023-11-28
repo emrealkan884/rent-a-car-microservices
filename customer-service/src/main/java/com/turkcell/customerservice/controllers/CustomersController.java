@@ -6,6 +6,7 @@ import com.turkcell.customerservice.entities.dtos.responses.CustomerAddResponse;
 import com.turkcell.customerservice.entities.dtos.responses.CustomerGetResponse;
 import com.turkcell.customerservice.entities.dtos.responses.CustomerUpdateResponse;
 import com.turkcell.customerservice.services.abstracts.CustomerService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class CustomersController {
   private final CustomerService customerService;
 
   @PostMapping
-  public CustomerAddResponse register(@RequestBody CustomerAddRequest request) {
+  public CustomerAddResponse register(@RequestBody @Valid CustomerAddRequest request) {
     return customerService.register(request);
   }
 
@@ -28,7 +29,7 @@ public class CustomersController {
 
   @PutMapping
   public CustomerUpdateResponse update(
-      @RequestParam int id, @RequestBody CustomerUpdateRequest request) {
+      @RequestParam int id, @RequestBody @Valid CustomerUpdateRequest request) {
     return customerService.update(id, request);
   }
 

@@ -98,9 +98,11 @@ public class RentalManager implements RentalService {
             .uri(
                 "http://car-service/api/cars/getStateByInventoryCode",
                 (uriBuilder) -> uriBuilder.queryParam("inventoryCode", inventoryCode).build())
-            .retrieve()
-            .bodyToMono(Boolean.class)
-            .block();
+            .retrieve() // başka bir servisten gelen veriyi almak üzere bir HTTP isteği başlatır.
+            .bodyToMono(
+                Boolean.class) // HTTP yanıtındaki gövdeyi bir Mono nesnesine dönüştürmek için
+            // kullanılır.
+            .block(); // HTTP isteği tamamlanana kadar bekler
     return state;
   }
 
