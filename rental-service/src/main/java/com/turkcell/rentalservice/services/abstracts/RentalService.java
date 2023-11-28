@@ -1,7 +1,8 @@
 package com.turkcell.rentalservice.services.abstracts;
 
 import com.turkcell.rentalservice.entities.dtos.requests.RentalUpdateRequest;
-import com.turkcell.rentalservice.entities.dtos.responses.GetRentalDto;
+import com.turkcell.rentalservice.entities.dtos.responses.RentalGetResponse;
+import com.turkcell.rentalservice.entities.dtos.responses.RentalUpdateResponse;
 import java.util.List;
 
 public interface RentalService {
@@ -9,9 +10,9 @@ public interface RentalService {
 
   void delete(int id);
 
-  GetRentalDto update(int id, RentalUpdateRequest request);
+  RentalUpdateResponse update(int id, RentalUpdateRequest request);
 
-  GetRentalDto getById(int id);
+  RentalGetResponse getById(int id);
 
-  List<GetRentalDto> getAll();
+  List<RentalGetResponse> getAll();
 }

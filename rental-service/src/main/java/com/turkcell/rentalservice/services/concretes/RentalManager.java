@@ -2,7 +2,8 @@ package com.turkcell.rentalservice.services.concretes;
 
 import com.turkcell.rentalservice.entities.Rental;
 import com.turkcell.rentalservice.entities.dtos.requests.RentalUpdateRequest;
-import com.turkcell.rentalservice.entities.dtos.responses.GetRentalDto;
+import com.turkcell.rentalservice.entities.dtos.responses.RentalGetResponse;
+import com.turkcell.rentalservice.entities.dtos.responses.RentalUpdateResponse;
 import com.turkcell.rentalservice.repositories.RentalRepository;
 import com.turkcell.rentalservice.services.abstracts.RentalService;
 import java.time.LocalDate;
@@ -53,23 +54,23 @@ public class RentalManager implements RentalService {
   }
 
   @Override
-  public GetRentalDto update(int id, RentalUpdateRequest request) {
+  public RentalUpdateResponse update(int id, RentalUpdateRequest request) {
     Rental rental = rentalRepository.getReferenceById(id);
     rental.setRentalDate(request.getRentalDate());
     rental.setInventoryCode(request.getInventoryCode());
-    GetRentalDto getRentalDto =
-        GetRentalDto.builder()
+    RentalUpdateResponse rentalUpdateResponse =
+        RentalUpdateResponse.builder()
             .inventoryCode(rental.getInventoryCode())
             .rentalDate(rental.getRentalDate())
             .build();
-    return getRentalDto;
+    return rentalUpdateResponse;
   }
 
   @Override
-  public GetRentalDto getById(int id) {
+  public RentalGetResponse getById(int id) {
     Rental rental = rentalRepository.getReferenceById(id);
-    GetRentalDto getByIdRentalDto =
-        GetRentalDto.builder()
+    RentalGetResponse getByIdRentalDto =
+        RentalGetResponse.builder()
             .inventoryCode(rental.getInventoryCode())
             .rentalDate(rental.getRentalDate())
             .build();
@@ -77,16 +78,16 @@ public class RentalManager implements RentalService {
   }
 
   @Override
-  public List<GetRentalDto> getAll() {
+  public List<RentalGetResponse> getAll() {
     List<Rental> rentals = rentalRepository.findAll();
-    List<GetRentalDto> getRentalDtos = new ArrayList<>();
-    GetRentalDto getRentalDto = new GetRentalDto();
+    List<RentalGetResponse> rentalGetRespons = new ArrayList<>();
+    RentalGetResponse rentalGetResponse = new RentalGetResponse();
     for (Rental rental : rentals) {
-      getRentalDto.setRentalDate(rental.getRentalDate());
-      getRentalDto.setInventoryCode(rental.getInventoryCode());
-      getRentalDtos.add(getRentalDto);
+      rentalGetResponse.setRentalDate(rental.getRentalDate());
+      rentalGetResponse.setInventoryCode(rental.getInventoryCode());
+      rentalGetRespons.add(rentalGetResponse);
     }
-    return getRentalDtos;
+    return rentalGetRespons;
   }
 
   private boolean checkCarState(String inventoryCode) {

@@ -16,6 +16,9 @@
         <module name="notification-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="exception-service" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -23,6 +26,7 @@
       <module name="car-service" options="-parameters" />
       <module name="customer-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
+      <module name="exception-service" options="-parameters" />
       <module name="notification-service" options="-parameters" />
       <module name="rental-service" options="-parameters" />
       <module name="test-service" options="-parameters" />

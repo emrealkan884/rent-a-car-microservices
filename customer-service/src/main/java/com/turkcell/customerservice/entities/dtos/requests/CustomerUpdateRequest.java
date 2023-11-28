@@ -1,4 +1,4 @@
-package com.turkcell.customerservice.entities.dtos;
+package com.turkcell.customerservice.entities.dtos.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CustomerAddResponse {
-  private Integer id;
+public class CustomerUpdateRequest {
   private String name;
   private String lastName;
   private String username;
+  private String password;
   private String email;
 }

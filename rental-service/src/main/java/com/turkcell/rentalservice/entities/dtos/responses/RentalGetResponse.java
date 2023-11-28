@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GetRentalDto {
+public class RentalGetResponse {
   LocalDate rentalDate;
   private String inventoryCode;
 }

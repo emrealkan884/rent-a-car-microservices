@@ -1,4 +1,4 @@
-package com.turkcell.carservice.entities.dtos.requests;
+package com.turkcell.carservice.entities.dtos.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateCarRequestDto {
+public class CarUpdateResponse {
   private String inventoryCode;
   private String brand;
   private String model;

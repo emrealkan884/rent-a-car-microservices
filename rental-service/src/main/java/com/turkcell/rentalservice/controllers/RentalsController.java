@@ -1,7 +1,8 @@
 package com.turkcell.rentalservice.controllers;
 
 import com.turkcell.rentalservice.entities.dtos.requests.RentalUpdateRequest;
-import com.turkcell.rentalservice.entities.dtos.responses.GetRentalDto;
+import com.turkcell.rentalservice.entities.dtos.responses.RentalGetResponse;
+import com.turkcell.rentalservice.entities.dtos.responses.RentalUpdateResponse;
 import com.turkcell.rentalservice.services.abstracts.RentalService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -24,17 +25,18 @@ public class RentalsController {
   }
 
   @PutMapping
-  public GetRentalDto update(@RequestParam int id, @RequestBody RentalUpdateRequest request) {
+  public RentalUpdateResponse update(
+      @RequestParam int id, @RequestBody RentalUpdateRequest request) {
     return rentalService.update(id, request);
   }
 
   @GetMapping("/getById")
-  public GetRentalDto getById(int id) {
+  public RentalGetResponse getById(int id) {
     return rentalService.getById(id);
   }
 
   @GetMapping("/getAll")
-  public List<GetRentalDto> getAll() {
+  public List<RentalGetResponse> getAll() {
     return rentalService.getAll();
   }
 }

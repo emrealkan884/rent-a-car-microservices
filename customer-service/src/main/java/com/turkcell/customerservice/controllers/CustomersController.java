@@ -1,9 +1,10 @@
 package com.turkcell.customerservice.controllers;
 
-import com.turkcell.customerservice.entities.dtos.CustomerAddRequest;
-import com.turkcell.customerservice.entities.dtos.CustomerAddResponse;
-import com.turkcell.customerservice.entities.dtos.CustomerUpdateRequest;
-import com.turkcell.customerservice.entities.dtos.GetCustomerDto;
+import com.turkcell.customerservice.entities.dtos.requests.CustomerAddRequest;
+import com.turkcell.customerservice.entities.dtos.requests.CustomerUpdateRequest;
+import com.turkcell.customerservice.entities.dtos.responses.CustomerAddResponse;
+import com.turkcell.customerservice.entities.dtos.responses.CustomerGetResponse;
+import com.turkcell.customerservice.entities.dtos.responses.CustomerUpdateResponse;
 import com.turkcell.customerservice.services.abstracts.CustomerService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,17 +27,18 @@ public class CustomersController {
   }
 
   @PutMapping
-  public GetCustomerDto update(@RequestParam int id, @RequestBody CustomerUpdateRequest request) {
+  public CustomerUpdateResponse update(
+      @RequestParam int id, @RequestBody CustomerUpdateRequest request) {
     return customerService.update(id, request);
   }
 
   @GetMapping("/getById")
-  public GetCustomerDto getById(int id) {
+  public CustomerGetResponse getById(int id) {
     return customerService.getById(id);
   }
 
   @GetMapping("/getAll")
-  public List<GetCustomerDto> getAll() {
+  public List<CustomerGetResponse> getAll() {
     return customerService.getAll();
   }
 

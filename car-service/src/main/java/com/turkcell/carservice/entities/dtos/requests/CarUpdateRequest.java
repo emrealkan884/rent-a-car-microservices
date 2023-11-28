@@ -1,4 +1,4 @@
-package com.turkcell.customerservice.entities.dtos;
+package com.turkcell.carservice.entities.dtos.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GetCustomerDto {
-  private String name;
-  private String lastName;
-  private String username;
+public class CarUpdateRequest {
+  private Double dailyPrice;
+  private Boolean state;
 }

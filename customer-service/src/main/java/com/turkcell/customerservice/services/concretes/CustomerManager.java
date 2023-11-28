@@ -1,24 +1,28 @@
 package com.turkcell.customerservice.services.concretes;
 
 import com.turkcell.customerservice.entities.Customer;
-import com.turkcell.customerservice.entities.dtos.CustomerAddRequest;
-import com.turkcell.customerservice.entities.dtos.CustomerAddResponse;
-import com.turkcell.customerservice.entities.dtos.CustomerUpdateRequest;
-import com.turkcell.customerservice.entities.dtos.GetCustomerDto;
+import com.turkcell.customerservice.entities.dtos.requests.CustomerAddRequest;
+import com.turkcell.customerservice.entities.dtos.requests.CustomerUpdateRequest;
+import com.turkcell.customerservice.entities.dtos.responses.CustomerAddResponse;
+import com.turkcell.customerservice.entities.dtos.responses.CustomerGetResponse;
+import com.turkcell.customerservice.entities.dtos.responses.CustomerUpdateResponse;
 import com.turkcell.customerservice.repositories.CustomerRepository;
 import com.turkcell.customerservice.services.abstracts.CustomerService;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class CustomerManager implements CustomerService {
   private final CustomerRepository customerRepository;
+  private final MessageSource messageSource;
 
   @Override
   public CustomerAddResponse register(CustomerAddRequest request) {
+    // customerWithSameEmailShouldNotExist(request.getEmail());
     Customer customer =
         Customer.builder()
             .name(request.getName())
@@ -46,7 +50,7 @@ public class CustomerManager implements CustomerService {
   }
 
   @Override
-  public GetCustomerDto update(int id, CustomerUpdateRequest request) {
+  public CustomerUpdateResponse update(int id, CustomerUpdateRequest request) {
     Customer customer = customerRepository.getReferenceById(id);
     customer.setName(request.getName());
     customer.setEmail(request.getEmail());
@@ -54,39 +58,40 @@ public class CustomerManager implements CustomerService {
     customer.setLastName(request.getLastName());
     customer.setUsername(request.getUsername());
     customerRepository.save(customer);
-    GetCustomerDto getCustomerDto =
-        GetCustomerDto.builder()
+    CustomerUpdateResponse customerUpdateResponse =
+        CustomerUpdateResponse.builder()
             .username(customer.getUsername())
             .name(customer.getName())
             .lastName(customer.getLastName())
+            .email(customer.getEmail())
             .build();
-    return getCustomerDto;
+    return customerUpdateResponse;
   }
 
   @Override
-  public GetCustomerDto getById(int id) {
+  public CustomerGetResponse getById(int id) {
     Customer customer = customerRepository.getReferenceById(id);
-    GetCustomerDto getCustomerDto =
-        GetCustomerDto.builder()
+    CustomerGetResponse customerGetResponse =
+        CustomerGetResponse.builder()
             .username(customer.getUsername())
             .name(customer.getName())
             .lastName(customer.getLastName())
             .build();
-    return getCustomerDto;
+    return customerGetResponse;
   }
 
   @Override
-  public List<GetCustomerDto> getAll() {
+  public List<CustomerGetResponse> getAll() {
     List<Customer> customers = customerRepository.findAll();
-    List<GetCustomerDto> getCustomerDtos = new ArrayList<>();
-    GetCustomerDto getCustomerDto = new GetCustomerDto();
+    List<CustomerGetResponse> customerGetResponses = new ArrayList<>();
+    CustomerGetResponse customerGetResponse = new CustomerGetResponse();
     for (Customer customer : customers) {
-      getCustomerDto.setUsername(customer.getUsername());
-      getCustomerDto.setName(customer.getName());
-      getCustomerDto.setLastName(customer.getLastName());
-      getCustomerDtos.add(getCustomerDto);
+      customerGetResponse.setUsername(customer.getUsername());
+      customerGetResponse.setName(customer.getName());
+      customerGetResponse.setLastName(customer.getLastName());
+      customerGetResponses.add(customerGetResponse);
     }
-    return getCustomerDtos;
+    return customerGetResponses;
   }
 
   @Override
@@ -110,4 +115,15 @@ public class CustomerManager implements CustomerService {
     customer = customerRepository.save(customer);
     return customer.getBalance();
   }
+
+  //  private void customerWithSameEmailShouldNotExist(String email) {
+  //    // Aynı emaile sahip iki musteri olmamalı
+  //    Customer customerWithSameEmail = customerRepository.findByEmail(email);
+  //    if (customerWithSameEmail != null) {
+  //      // Business kuralı hatası
+  //      throw new BusinessException(
+  //          messageSource.getMessage(
+  //              "customerWithSameEmailShouldNotExist", null, LocaleContextHolder.getLocale()));
+  //    }
+  //  }
 }

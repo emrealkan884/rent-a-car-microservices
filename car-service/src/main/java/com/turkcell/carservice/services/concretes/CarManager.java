@@ -2,7 +2,11 @@ package com.turkcell.carservice.services.concretes;
 
 import com.turkcell.carservice.entities.Car;
 import com.turkcell.carservice.entities.Image;
-import com.turkcell.carservice.entities.dtos.requests.CreateCarRequestDto;
+import com.turkcell.carservice.entities.dtos.requests.CarAddRequest;
+import com.turkcell.carservice.entities.dtos.requests.CarUpdateRequest;
+import com.turkcell.carservice.entities.dtos.responses.CarAddResponse;
+import com.turkcell.carservice.entities.dtos.responses.CarGetResponse;
+import com.turkcell.carservice.entities.dtos.responses.CarUpdateResponse;
 import com.turkcell.carservice.repositories.CarRepository;
 import com.turkcell.carservice.services.abstracts.CarService;
 import java.util.ArrayList;
@@ -17,7 +21,7 @@ public class CarManager implements CarService {
   private final CarRepository carRepository;
 
   @Override
-  public void add(CreateCarRequestDto request) {
+  public CarAddResponse add(CarAddRequest request) {
     Car car =
         Car.builder()
             .inventoryCode(request.getInventoryCode())
@@ -28,21 +32,38 @@ public class CarManager implements CarService {
             .dailyPrice(request.getDailyPrice())
             .state(request.getState())
             .build();
-    carRepository.save(car);
+    car = carRepository.save(car);
+    CarAddResponse carAddResponse =
+        CarAddResponse.builder()
+            .state(car.getState())
+            .modelYear(car.getModelYear())
+            .brand(car.getBrand())
+            .colour(car.getColour())
+            .inventoryCode(car.getInventoryCode())
+            .dailyPrice(car.getDailyPrice())
+            .model(car.getModel())
+            .build();
+    return carAddResponse;
   }
 
   @Override
-  public void update(String inventoryCode, CreateCarRequestDto request) {
+  public CarUpdateResponse update(String inventoryCode, CarUpdateRequest request) {
     Car car = carRepository.findByInventoryCode(inventoryCode);
-    car.setBrand(request.getBrand());
-    car.setModel(request.getModel());
-    car.setModelYear(request.getModelYear());
-    car.setColour(request.getColour());
-    car.setInventoryCode(request.getInventoryCode());
     car.setDailyPrice(request.getDailyPrice());
     car.setImages(new ArrayList<>());
     car.setState(request.getState());
-    carRepository.save(car);
+    car = carRepository.save(car);
+    CarUpdateResponse carUpdateResponse =
+        CarUpdateResponse.builder()
+            .state(car.getState())
+            .modelYear(car.getModelYear())
+            .brand(car.getBrand())
+            .colour(car.getColour())
+            .inventoryCode(car.getInventoryCode())
+            .dailyPrice(car.getDailyPrice())
+            .model(car.getModel())
+            .build();
+    return carUpdateResponse;
   }
 
   @Override
@@ -52,8 +73,19 @@ public class CarManager implements CarService {
   }
 
   @Override
-  public List<Car> getAll() {
-    return carRepository.findAll();
+  public List<CarGetResponse> getAll() {
+    List<Car> cars = carRepository.findAll();
+    List<CarGetResponse> carGetResponses = new ArrayList<>();
+    CarGetResponse carGetResponse = new CarGetResponse();
+    for (Car car : cars) {
+      carGetResponse.setModel(car.getModel());
+      carGetResponse.setModelYear(car.getModelYear());
+      carGetResponse.setBrand(car.getBrand());
+      carGetResponse.setDailyPrice(car.getDailyPrice());
+      carGetResponse.setColour(car.getColour());
+      carGetResponses.add(carGetResponse);
+    }
+    return carGetResponses;
   }
 
   @Override

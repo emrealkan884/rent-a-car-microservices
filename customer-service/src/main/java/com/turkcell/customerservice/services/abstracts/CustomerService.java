@@ -1,9 +1,10 @@
 package com.turkcell.customerservice.services.abstracts;
 
-import com.turkcell.customerservice.entities.dtos.CustomerAddRequest;
-import com.turkcell.customerservice.entities.dtos.CustomerAddResponse;
-import com.turkcell.customerservice.entities.dtos.CustomerUpdateRequest;
-import com.turkcell.customerservice.entities.dtos.GetCustomerDto;
+import com.turkcell.customerservice.entities.dtos.requests.CustomerAddRequest;
+import com.turkcell.customerservice.entities.dtos.requests.CustomerUpdateRequest;
+import com.turkcell.customerservice.entities.dtos.responses.CustomerAddResponse;
+import com.turkcell.customerservice.entities.dtos.responses.CustomerGetResponse;
+import com.turkcell.customerservice.entities.dtos.responses.CustomerUpdateResponse;
 import java.util.List;
 
 public interface CustomerService {
@@ -12,11 +13,11 @@ public interface CustomerService {
 
   void delete(int id);
 
-  GetCustomerDto update(int id, CustomerUpdateRequest request);
+  CustomerUpdateResponse update(int id, CustomerUpdateRequest request);
 
-  GetCustomerDto getById(int id);
+  CustomerGetResponse getById(int id);
 
-  List<GetCustomerDto> getAll();
+  List<CustomerGetResponse> getAll();
 
   double balanceUp(int customerId, double balance);
 
