@@ -1,4 +1,38 @@
 services:
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    ports:
+      - 8080:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command:
+      - start-dev
+    volumes:
+      - C:\Users\toor\Desktop\volumes\keycloak:/opt/keycloak/data
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - C:\Users\toor\Desktop\volumes\mongodb:/data/db
+
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 12345
+    ports:
+      - 5432:5432
+    volumes:
+      - C:\Users\toor\Desktop\volumes\postgres:/var/lib/postgresql/data
+
   discovery-server:
     build: ./discovery-server
     ports:
@@ -7,16 +41,6 @@ services:
       - eureka.instance.prefer-ip-address= true
     depends_on:
       - keycloak
-
-  api-gateway:
-    build: ./api-gateway
-    ports:
-      - 9999:9999
-    environment:
-      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka
-      - spring.security.oauth2.resourceserver.jwt.issuer-uri = http://keycloak:8080/realms/rent-a-car-microservice
-    depends_on:
-      - discovery-server
 
   car-service:
     build: ./car-service
@@ -29,7 +53,15 @@ services:
     depends_on:
       - discovery-server
       - mongodb
-  
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - 9999:9999
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    command: [ "./wait-for-it.sh", "car-service:6002" ]
+
   rental-service:
     build: ./rental-service
     ports:
@@ -61,39 +93,7 @@ services:
     environment:
       - spring.kafka.bootstrap-servers=kafka:9092
 
-  mongodb:
-    image: mongo
-    container_name: mongodb
-    restart: always
-    ports:
-      - 27017:27017
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
-    volumes:
-      - C:\Users\toor\Desktop\volumes\mongodb:/data/db
 
-  postgres:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: 12345
-    ports:
-      - 5432:5432
-    volumes:
-      - C:\Users\toor\Desktop\volumes\postgres:/var/lib/postgresql/data
-
-  keycloak:
-    image: quay.io/keycloak/keycloak
-    ports:
-      - 8080:8080
-    environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-    command:
-      - start-dev
-    volumes:
-      - C:\Users\toor\Desktop\volumes\keycloak:/opt/keycloak/data
 
   zookeeper:
     image: confluentinc/cp-zookeeper
