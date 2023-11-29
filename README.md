@@ -26,4 +26,8 @@
 - Müşteriler bakiye ekleyebiliyor ve çekebiliyor.
 
 ### rental-service:
-Kiralama işlemi yapıyor. Kiralama işlemi yapılırken kiralanacak aracın durumuna, aracın günlük fiyatına ve kiralayacak müşterinin bakiyesine bakılıyor. Kiralanacak aracın durumu 'false' veya günlük kiralama ücreti müşterinin bakiyesinden büyükse 'Araç kiralamaya uygun değildir' dönüyor. Diğer türlü araç kiralanıyor. Aracın durumu 'true' dan 'false' a dönüyor. Aracın kiralama ücreti müşterinin bakiyenden düşüyor ve müşterinin güncel bakiyesi PostgreSQL'deki customer-service tablosunda güncelleniyor ve kiralama ile ilgili mesaj notification-service üzerinden görüntüleniyor. 
+- Kiralama işlemi yapıyor. 
+- Kiralama işlemi yapılırken kiralanacak aracın durumuna, aracın günlük fiyatına ve kiralayacak müşterinin bakiyesine bakılıyor. Kiralanacak aracın durumu 'false' veya günlük kiralama ücreti müşterinin bakiyesinden büyükse 'Araç kiralamaya uygun değildir' dönüyor. Diğer türlü araç kiralanıyor.
+- Aracın durumu 'true' dan 'false' a dönüyor.
+- Aracın kiralama ücreti müşterinin bakiyenden düşüyor ve müşterinin güncel bakiyesi PostgreSQL'deki customer-service tablosunda güncelleniyor
+- Kiralama ile ilgili mesaj notification-service üzerinden görüntüleniyor. 
