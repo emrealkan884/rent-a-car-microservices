@@ -1,5 +1,6 @@
 package com.turkcell.customerservice.services.concretes;
 
+import com.turkcell.customerservice.core.exceptions.BusinessException;
 import com.turkcell.customerservice.entities.Customer;
 import com.turkcell.customerservice.entities.dtos.requests.CustomerAddRequest;
 import com.turkcell.customerservice.entities.dtos.requests.CustomerUpdateRequest;
@@ -8,10 +9,11 @@ import com.turkcell.customerservice.entities.dtos.responses.CustomerGetResponse;
 import com.turkcell.customerservice.entities.dtos.responses.CustomerUpdateResponse;
 import com.turkcell.customerservice.repositories.CustomerRepository;
 import com.turkcell.customerservice.services.abstracts.CustomerService;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,28 +21,15 @@ import org.springframework.stereotype.Service;
 public class CustomerManager implements CustomerService {
   private final CustomerRepository customerRepository;
   private final MessageSource messageSource;
+  private final ModelMapper modelMapper;
 
   @Override
   public CustomerAddResponse register(CustomerAddRequest request) {
-    // customerWithSameEmailShouldNotExist(request.getEmail());
-    Customer customer =
-        Customer.builder()
-            .name(request.getName())
-            .email(request.getEmail())
-            .username(request.getUsername())
-            .lastName(request.getLastName())
-            .password(request.getPassword())
-            .balance(0)
-            .build();
-    customerRepository.save(customer);
+    customerWithSameEmailShouldNotExist(request.getEmail());
+    Customer customerForAutoMapping = modelMapper.map(request, Customer.class);
+    customerForAutoMapping = customerRepository.save(customerForAutoMapping);
     CustomerAddResponse customerAddResponse =
-        CustomerAddResponse.builder()
-            .id(customer.getId())
-            .name(customer.getName())
-            .email(customer.getEmail())
-            .lastName(customer.getLastName())
-            .username(customer.getUsername())
-            .build();
+        modelMapper.map(customerForAutoMapping, CustomerAddResponse.class);
     return customerAddResponse;
   }
 
@@ -52,45 +41,26 @@ public class CustomerManager implements CustomerService {
   @Override
   public CustomerUpdateResponse update(int id, CustomerUpdateRequest request) {
     Customer customer = customerRepository.getReferenceById(id);
-    customer.setName(request.getName());
-    customer.setEmail(request.getEmail());
-    customer.setPassword(request.getPassword());
-    customer.setLastName(request.getLastName());
-    customer.setUsername(request.getUsername());
-    customerRepository.save(customer);
+    modelMapper.map(request, customer);
+    customer = customerRepository.save(customer);
+
     CustomerUpdateResponse customerUpdateResponse =
-        CustomerUpdateResponse.builder()
-            .username(customer.getUsername())
-            .name(customer.getName())
-            .lastName(customer.getLastName())
-            .email(customer.getEmail())
-            .build();
+        modelMapper.map(customer, CustomerUpdateResponse.class);
     return customerUpdateResponse;
   }
 
   @Override
   public CustomerGetResponse getById(int id) {
     Customer customer = customerRepository.getReferenceById(id);
-    CustomerGetResponse customerGetResponse =
-        CustomerGetResponse.builder()
-            .username(customer.getUsername())
-            .name(customer.getName())
-            .lastName(customer.getLastName())
-            .build();
+    CustomerGetResponse customerGetResponse = modelMapper.map(customer, CustomerGetResponse.class);
     return customerGetResponse;
   }
 
   @Override
   public List<CustomerGetResponse> getAll() {
     List<Customer> customers = customerRepository.findAll();
-    List<CustomerGetResponse> customerGetResponses = new ArrayList<>();
-    CustomerGetResponse customerGetResponse = new CustomerGetResponse();
-    for (Customer customer : customers) {
-      customerGetResponse.setUsername(customer.getUsername());
-      customerGetResponse.setName(customer.getName());
-      customerGetResponse.setLastName(customer.getLastName());
-      customerGetResponses.add(customerGetResponse);
-    }
+    List<CustomerGetResponse> customerGetResponses =
+        customers.stream().map(item -> modelMapper.map(item, CustomerGetResponse.class)).toList();
     return customerGetResponses;
   }
 
@@ -116,14 +86,14 @@ public class CustomerManager implements CustomerService {
     return customer.getBalance();
   }
 
-  //  private void customerWithSameEmailShouldNotExist(String email) {
-  //    // Aynı emaile sahip iki musteri olmamalı
-  //    Customer customerWithSameEmail = customerRepository.findByEmail(email);
-  //    if (customerWithSameEmail != null) {
-  //      // Business kuralı hatası
-  //      throw new BusinessException(
-  //          messageSource.getMessage(
-  //              "customerWithSameEmailShouldNotExist", null, LocaleContextHolder.getLocale()));
-  //    }
-  //  }
+  private void customerWithSameEmailShouldNotExist(String email) {
+    // Aynı emaile sahip iki musteri olmamalı
+    Customer customerWithSameEmail = customerRepository.findByEmail(email);
+    if (customerWithSameEmail != null) {
+      // Business kuralı hatası
+      throw new BusinessException(
+          messageSource.getMessage(
+              "customerWithSameEmailShouldNotExist", null, LocaleContextHolder.getLocale()));
+    }
+  }
 }

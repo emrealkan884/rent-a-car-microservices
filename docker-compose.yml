@@ -49,7 +49,7 @@ services:
     environment:
       - eureka.instance.prefer-ip-address=true
       - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka
-      - spring.data.mongodb.uri=mongodb://root:root@mongodb:27017/carService?authSource=admin
+      - spring.data.mongodb.uri=mongodb://root:root@mongodb:27017/car-service?authSource=admin
     depends_on:
       - discovery-server
       - mongodb

@@ -12,10 +12,12 @@
         <option value="$PROJECT_DIR$/customer-service/pom.xml" />
         <option value="$PROJECT_DIR$/notification-service/pom.xml" />
         <option value="$PROJECT_DIR$/exception-service/pom.xml" />
+        <option value="$PROJECT_DIR$/common-package/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/common-package/pom.xml" />
         <option value="$PROJECT_DIR$/exception-service/pom.xml" />
       </set>
     </option>

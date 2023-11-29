@@ -17,14 +17,14 @@ public class CustomerAddRequest {
 
   private String lastName;
 
-  @NotBlank(message = "Kullanici adi bos birakilamaz.")
+  @NotBlank(message = "{userNameShouldNotBeEmpty}")
   private String username;
 
-  @NotBlank(message = "Kullanici sifresi bos birakilamaz.")
-  @Size(min = 8, max = 20, message = "Parola en az 8 hane ve en fazla 20 hane olabilir")
+  @NotBlank(message = "{passwordShouldNotBeEmpty}")
+  @Size(min = 8, max = 20, message = "{passwordShouldBeMinimumAndMaximum}")
   private String password;
 
-  @NotBlank(message = "Kullanici emaili bos birakilamaz.")
+  @NotBlank(message = "{emailShouldNotBeEmpty}")
   @Email(
       message = "Email gecerli degil.",
       regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")

@@ -1,5 +1,6 @@
 package com.turkcell.carservice.services.concretes;
 
+import com.turkcell.carservice.core.exceptions.BusinessException;
 import com.turkcell.carservice.entities.Car;
 import com.turkcell.carservice.entities.Image;
 import com.turkcell.carservice.entities.dtos.requests.CarAddRequest;
@@ -12,6 +13,9 @@ import com.turkcell.carservice.services.abstracts.CarService;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,30 +23,17 @@ import org.springframework.stereotype.Service;
 public class CarManager implements CarService {
 
   private final CarRepository carRepository;
+  private final ModelMapper modelMapper;
+  private final MessageSource messageSource;
 
   @Override
   public CarAddResponse add(CarAddRequest request) {
-    Car car =
-        Car.builder()
-            .inventoryCode(request.getInventoryCode())
-            .brand(request.getBrand())
-            .model(request.getModel())
-            .colour(request.getColour())
-            .modelYear(request.getModelYear())
-            .dailyPrice(request.getDailyPrice())
-            .state(request.getState())
-            .build();
-    car = carRepository.save(car);
-    CarAddResponse carAddResponse =
-        CarAddResponse.builder()
-            .state(car.getState())
-            .modelYear(car.getModelYear())
-            .brand(car.getBrand())
-            .colour(car.getColour())
-            .inventoryCode(car.getInventoryCode())
-            .dailyPrice(car.getDailyPrice())
-            .model(car.getModel())
-            .build();
+    checkIfCarExist(request.getInventoryCode());
+    Car carFromAutoMapping = modelMapper.map(request, Car.class);
+    carFromAutoMapping = carRepository.save(carFromAutoMapping);
+
+    // Ekleme islemimizin sonucunu göstermek için responce
+    CarAddResponse carAddResponse = modelMapper.map(carFromAutoMapping, CarAddResponse.class);
     return carAddResponse;
   }
 
@@ -53,16 +44,8 @@ public class CarManager implements CarService {
     car.setImages(new ArrayList<>());
     car.setState(request.getState());
     car = carRepository.save(car);
-    CarUpdateResponse carUpdateResponse =
-        CarUpdateResponse.builder()
-            .state(car.getState())
-            .modelYear(car.getModelYear())
-            .brand(car.getBrand())
-            .colour(car.getColour())
-            .inventoryCode(car.getInventoryCode())
-            .dailyPrice(car.getDailyPrice())
-            .model(car.getModel())
-            .build();
+
+    CarUpdateResponse carUpdateResponse = modelMapper.map(car, CarUpdateResponse.class);
     return carUpdateResponse;
   }
 
@@ -75,16 +58,8 @@ public class CarManager implements CarService {
   @Override
   public List<CarGetResponse> getAll() {
     List<Car> cars = carRepository.findAll();
-    List<CarGetResponse> carGetResponses = new ArrayList<>();
-    CarGetResponse carGetResponse = new CarGetResponse();
-    for (Car car : cars) {
-      carGetResponse.setModel(car.getModel());
-      carGetResponse.setModelYear(car.getModelYear());
-      carGetResponse.setBrand(car.getBrand());
-      carGetResponse.setDailyPrice(car.getDailyPrice());
-      carGetResponse.setColour(car.getColour());
-      carGetResponses.add(carGetResponse);
-    }
+    List<CarGetResponse> carGetResponses =
+        cars.stream().map(item -> modelMapper.map(item, CarGetResponse.class)).toList();
     return carGetResponses;
   }
 
@@ -127,5 +102,14 @@ public class CarManager implements CarService {
     List<Image> images = car.getImages();
     images.add(image);
     return carRepository.save(car);
+  }
+
+  private void checkIfCarExist(String inventoryCode) {
+    Car car = getByInventoryCode(inventoryCode);
+    if (car != null) {
+      throw new BusinessException(
+          messageSource.getMessage(
+              "checkIfCarExist", new Object[] {inventoryCode}, LocaleContextHolder.getLocale()));
+    }
   }
 }

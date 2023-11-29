@@ -1,4 +1,4 @@
-package com.turkcell.carservice.config;
+package com.turkcell.carservice.core.configs;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;

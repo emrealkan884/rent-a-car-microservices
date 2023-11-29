@@ -7,9 +7,9 @@ import com.turkcell.rentalservice.entities.dtos.responses.RentalUpdateResponse;
 import com.turkcell.rentalservice.repositories.RentalRepository;
 import com.turkcell.rentalservice.services.abstracts.RentalService;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -20,6 +20,7 @@ public class RentalManager implements RentalService {
 
   private final RentalRepository rentalRepository;
   private final WebClient.Builder webClientBuilder;
+  private final ModelMapper modelMapper;
   private final KafkaTemplate<String, String> kafkaTemplate;
 
   public String submitRental(String inventoryCode, int customerId) {
@@ -30,7 +31,11 @@ public class RentalManager implements RentalService {
 
       if (isCarAvailable && dailyPrice <= customerBalance) {
         Rental rental =
-            Rental.builder().rentalDate(LocalDate.now()).inventoryCode(inventoryCode).build();
+            Rental.builder()
+                .rentalDate(LocalDate.now())
+                .inventoryCode(inventoryCode)
+                .customerId(customerId)
+                .build();
 
         customerBalanceDown(customerId, dailyPrice);
         // Aracın durumunu güncelle
@@ -56,38 +61,26 @@ public class RentalManager implements RentalService {
   @Override
   public RentalUpdateResponse update(int id, RentalUpdateRequest request) {
     Rental rental = rentalRepository.getReferenceById(id);
-    rental.setRentalDate(request.getRentalDate());
-    rental.setInventoryCode(request.getInventoryCode());
-    RentalUpdateResponse rentalUpdateResponse =
-        RentalUpdateResponse.builder()
-            .inventoryCode(rental.getInventoryCode())
-            .rentalDate(rental.getRentalDate())
-            .build();
+    // ornegin rental.setRentalDate(request.getRentalDate) gibi degerleri otomatik atiyor.
+    modelMapper.map(request, rental);
+    rental = rentalRepository.save(rental);
+    RentalUpdateResponse rentalUpdateResponse = modelMapper.map(rental, RentalUpdateResponse.class);
     return rentalUpdateResponse;
   }
 
   @Override
   public RentalGetResponse getById(int id) {
     Rental rental = rentalRepository.getReferenceById(id);
-    RentalGetResponse getByIdRentalDto =
-        RentalGetResponse.builder()
-            .inventoryCode(rental.getInventoryCode())
-            .rentalDate(rental.getRentalDate())
-            .build();
+    RentalGetResponse getByIdRentalDto = modelMapper.map(rental, RentalGetResponse.class);
     return getByIdRentalDto;
   }
 
   @Override
   public List<RentalGetResponse> getAll() {
     List<Rental> rentals = rentalRepository.findAll();
-    List<RentalGetResponse> rentalGetRespons = new ArrayList<>();
-    RentalGetResponse rentalGetResponse = new RentalGetResponse();
-    for (Rental rental : rentals) {
-      rentalGetResponse.setRentalDate(rental.getRentalDate());
-      rentalGetResponse.setInventoryCode(rental.getInventoryCode());
-      rentalGetRespons.add(rentalGetResponse);
-    }
-    return rentalGetRespons;
+    List<RentalGetResponse> rentalGetResponses =
+        rentals.stream().map(item -> modelMapper.map(item, RentalGetResponse.class)).toList();
+    return rentalGetResponses;
   }
 
   private boolean checkCarState(String inventoryCode) {

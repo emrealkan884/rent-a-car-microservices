@@ -1,13 +1,15 @@
-package com.turkcell.customerservice;
+package com.turkcell.rentalservice;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@Component
 @RestControllerAdvice
 public class GlobalExceptionHandlers {
 
