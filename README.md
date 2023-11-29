@@ -1,5 +1,5 @@
 # TURKCELL BOOTCAMP RENT A CAR PROJEMİZ
-<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/Untitled_Diagram.drawio_1.png height=600><br>
+<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/Untitled_Diagram.drawio_1.png height=550 width=900><br>
 #### Projemiz servisler localde, Veritabaları ve Kafka  docker üzerinde çalıştırdığımız zaman sorunsuz çalışıyor ve isteklerimizi yerine getiryor.
 
 ### Projemizin Endpoint'lerini Görüntülemek İçin Linkler :
