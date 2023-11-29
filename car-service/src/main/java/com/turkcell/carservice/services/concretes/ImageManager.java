@@ -3,15 +3,12 @@ package com.turkcell.carservice.services.concretes;
 import com.turkcell.carservice.entities.Car;
 import com.turkcell.carservice.entities.Image;
 import com.turkcell.carservice.entities.ImageModel;
-import com.turkcell.carservice.repositories.CarRepository;
 import com.turkcell.carservice.repositories.ImageRepository;
 import com.turkcell.carservice.services.abstracts.CarService;
 import com.turkcell.carservice.services.abstracts.CloudinaryService;
 import com.turkcell.carservice.services.abstracts.ImageService;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +19,9 @@ public class ImageManager implements ImageService {
   private final CloudinaryService cloudinaryService;
   private final ImageRepository imageRepository;
   private final CarService carService;
-  private final CarRepository carRepository;
 
   @Override
-  public ResponseEntity<Map> uploadImage(ImageModel imageModel, String inventoryCode) {
+  public ResponseEntity<String> uploadImage(ImageModel imageModel, String inventoryCode) {
     try {
       if (imageModel.getName().isEmpty()) {
         return ResponseEntity.badRequest().build();
@@ -39,17 +35,10 @@ public class ImageManager implements ImageService {
       if (image.getUrl() == null) {
         return ResponseEntity.badRequest().build();
       }
-      Car car = carService.getByInventoryCode(inventoryCode);
-      List<Image> images = carService.getImagesByInventoryCode(inventoryCode);
-      if (images == null) {
-        images = new ArrayList<>();
-      }
-      images.add(image);
-      car.setImages(images);
-      carRepository.save(car);
+      Car car = carService.updateImageByInventoryCode(inventoryCode, image);
       image.setCar(car);
       imageRepository.save(image);
-      return ResponseEntity.ok().body(Map.of("url", image.getUrl()));
+      return new ResponseEntity<>(image.getUrl(), HttpStatusCode.valueOf(200));
     } catch (Exception e) {
       e.printStackTrace();
       return null;

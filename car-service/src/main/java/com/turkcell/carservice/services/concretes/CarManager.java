@@ -120,4 +120,12 @@ public class CarManager implements CarService {
     car = carRepository.save(car);
     return car.getState();
   }
+
+  @Override
+  public Car updateImageByInventoryCode(String inventoryCode, Image image) {
+    Car car = getByInventoryCode(inventoryCode);
+    List<Image> images = car.getImages();
+    images.add(image);
+    return carRepository.save(car);
+  }
 }

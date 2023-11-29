@@ -2,6 +2,7 @@ package com.turkcell.carservice.entities;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +26,7 @@ public class Car {
   private Double dailyPrice;
 
   @OneToMany(mappedBy = "cars", cascade = CascadeType.ALL)
-  private List<Image> images;
+  private List<Image> images = new ArrayList<>();
 
   private Boolean state;
 }

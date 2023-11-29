@@ -27,4 +27,6 @@ public interface CarService {
   Double getDailyPriceByInventoryCode(String inventoryCode);
 
   Boolean updateState(String inventoryCode, Boolean state);
+
+  Car updateImageByInventoryCode(String inventoryCode, Image image);
 }
