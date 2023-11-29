@@ -1,6 +1,12 @@
-# TURKCELL BOOTCAMP RENT A CAR PROJEMİZ
-<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/Untitled_Diagram.drawio_1.png height=550 width=900><br>
-#### Projemiz servisler localde, Veritabaları ve Kafka  docker üzerinde çalıştırdığımız zaman sorunsuz çalışıyor ve isteklerimizi yerine getiryor.
+<div align="center">
+<h1>TURKCELL BOOTCAMP RENT A CAR PROJEMİZ</h1>
+<br>
+<br>
+<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/Untitled_Diagram.drawio_1.png height=550 width=900><br><br>
+
+  
+</div>
+<h3>Projemiz servisler localde, Veritabaları ve Kafka  docker üzerinde çalıştırdığımız zaman sorunsuz çalışıyor ve isteklerimizi yerine getiriyor.<h3>
 
 ### Projemizin Endpoint'lerini Görüntülemek İçin Linkler :
 - car-service'in Endpoint'leri için =  localhost:6002/swagger-ui/index.html
