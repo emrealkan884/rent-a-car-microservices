@@ -22,6 +22,9 @@ public class Rental {
   @Column(name = "rentalDate")
   LocalDate rentalDate;
 
+  @Column(name = "endDate")
+  LocalDate endDate;
+
   @Column(name = "inventory_code")
   private String inventoryCode;
 

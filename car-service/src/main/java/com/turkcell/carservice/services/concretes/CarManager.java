@@ -39,7 +39,7 @@ public class CarManager implements CarService {
 
   @Override
   public CarUpdateResponse update(String inventoryCode, CarUpdateRequest request) {
-    Car car = carRepository.findByInventoryCode(inventoryCode);
+    Car car = returnCarByInventoryCodeIfExist(inventoryCode);
     car.setDailyPrice(request.getDailyPrice());
     car.setImages(new ArrayList<>());
     car.setState(request.getState());
@@ -51,7 +51,7 @@ public class CarManager implements CarService {
 
   @Override
   public void delete(String inventoryCode) {
-    Car car = carRepository.findByInventoryCode(inventoryCode);
+    Car car = returnCarByInventoryCodeIfExist(inventoryCode);
     carRepository.delete(car);
   }
 
@@ -111,5 +111,16 @@ public class CarManager implements CarService {
           messageSource.getMessage(
               "checkIfCarExist", new Object[] {inventoryCode}, LocaleContextHolder.getLocale()));
     }
+  }
+
+  private Car returnCarByInventoryCodeIfExist(String inventoryCode) {
+    Car car = getByInventoryCode(inventoryCode);
+    if (car == null)
+      throw new BusinessException(
+          messageSource.getMessage(
+              "carDoesNotExistWithGivenInventoryCode",
+              new Object[] {inventoryCode},
+              LocaleContextHolder.getLocale()));
+    return car;
   }
 }

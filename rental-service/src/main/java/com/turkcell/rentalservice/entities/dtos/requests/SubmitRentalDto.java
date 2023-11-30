@@ -1,4 +1,4 @@
-package com.turkcell.rentalservice.entities.dtos.responses;
+package com.turkcell.rentalservice.entities.dtos.requests;
 
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RentalGetResponse {
-  LocalDate rentalDate;
-  LocalDate endDate;
-  private String inventoryCode;
-}
+public class SubmitRentalDto {
 
+  private String inventoryCode;
+  private int customerId;
+  private LocalDate endDate;
+}

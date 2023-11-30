@@ -2,14 +2,18 @@ package com.turkcell.rentalservice.services.concretes;
 
 import com.turkcell.rentalservice.entities.Rental;
 import com.turkcell.rentalservice.entities.dtos.requests.RentalUpdateRequest;
+import com.turkcell.rentalservice.entities.dtos.requests.SubmitRentalDto;
 import com.turkcell.rentalservice.entities.dtos.responses.RentalGetResponse;
 import com.turkcell.rentalservice.entities.dtos.responses.RentalUpdateResponse;
 import com.turkcell.rentalservice.repositories.RentalRepository;
 import com.turkcell.rentalservice.services.abstracts.RentalService;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -21,35 +25,40 @@ public class RentalManager implements RentalService {
   private final RentalRepository rentalRepository;
   private final WebClient.Builder webClientBuilder;
   private final ModelMapper modelMapper;
+  private final MessageSource messageSource;
   private final KafkaTemplate<String, String> kafkaTemplate;
 
-  public String submitRental(String inventoryCode, int customerId) {
+  public String submitRental(SubmitRentalDto submitRentalDto) {
     try {
-      boolean isCarAvailable = checkCarState(inventoryCode);
-      double dailyPrice = getDailyPrice(inventoryCode);
-      double customerBalance = getCustomerBalance(customerId);
+      boolean isCarAvailable = checkCarState(submitRentalDto.getInventoryCode());
+      double dailyPrice = getDailyPrice(submitRentalDto.getInventoryCode());
+      double customerBalance = getCustomerBalance(submitRentalDto.getCustomerId());
+      double totalRentalPrice =
+          dailyPrice * (ChronoUnit.DAYS.between(LocalDate.now(), submitRentalDto.getEndDate()));
 
-      if (isCarAvailable && dailyPrice <= customerBalance) {
+      if (isCarAvailable && totalRentalPrice <= customerBalance) {
         Rental rental =
             Rental.builder()
                 .rentalDate(LocalDate.now())
-                .inventoryCode(inventoryCode)
-                .customerId(customerId)
+                .inventoryCode(submitRentalDto.getInventoryCode())
+                .customerId(submitRentalDto.getCustomerId())
+                .endDate(submitRentalDto.getEndDate())
                 .build();
 
-        customerBalanceDown(customerId, dailyPrice);
+        customerBalanceDown(submitRentalDto.getCustomerId(), totalRentalPrice);
         // Aracın durumunu güncelle
-        updateCarState(inventoryCode);
+        updateCarState(submitRentalDto.getInventoryCode());
         // Kafkaya bildirim gönder
         sendNotification();
         // Kiralamayı kaydet
         rentalRepository.save(rental);
-        return "Arac kiralandi";
+        return messageSource.getMessage("CarIsRented", null, LocaleContextHolder.getLocale());
       } else {
-        return "Arac kiralamaya uygun degil";
+        return messageSource.getMessage("CarNotSuitable", null, LocaleContextHolder.getLocale());
       }
     } catch (Exception e) {
-      return "Bir hata olustu: " + e.getMessage();
+      return messageSource.getMessage("ThereIsAError", null, LocaleContextHolder.getLocale())
+          + e.getMessage();
     }
   }
 
@@ -162,6 +171,6 @@ public class RentalManager implements RentalService {
   private void sendNotification() {
     kafkaTemplate.send(
         "notificationTopic",
-        " Tebrikler bir arac kiraladiniz. Araci teslim almak icin bugun saat 22:00'a kadar muracaat edin. ");
+        messageSource.getMessage("CarRentedMessage", null, LocaleContextHolder.getLocale()));
   }
 }

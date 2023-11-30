@@ -1,6 +1,7 @@
 package com.turkcell.rentalservice.controllers;
 
 import com.turkcell.rentalservice.entities.dtos.requests.RentalUpdateRequest;
+import com.turkcell.rentalservice.entities.dtos.requests.SubmitRentalDto;
 import com.turkcell.rentalservice.entities.dtos.responses.RentalGetResponse;
 import com.turkcell.rentalservice.entities.dtos.responses.RentalUpdateResponse;
 import com.turkcell.rentalservice.services.abstracts.RentalService;
@@ -14,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 public class RentalsController {
   private final RentalService rentalService;
 
-  @GetMapping("/submitRental")
-  public String submitRental(@RequestParam String inventoryCode, @RequestParam int customerId) {
-    return rentalService.submitRental(inventoryCode, customerId);
+  @PostMapping("/submitRental")
+  public String submitRental(@RequestBody SubmitRentalDto submitRentalDto) {
+    return rentalService.submitRental(submitRentalDto);
   }
 
   @DeleteMapping

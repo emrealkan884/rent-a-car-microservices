@@ -1,11 +1,11 @@
 package com.turkcell.carservice.controllers;
 
-import com.turkcell.carservice.entities.ImageModel;
+import com.turkcell.carservice.entities.dtos.requests.ImageAddRequest;
+import com.turkcell.carservice.entities.dtos.responses.ImageAddResponse;
 import com.turkcell.carservice.repositories.ImageRepository;
 import com.turkcell.carservice.services.abstracts.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,9 +21,10 @@ public class ImagesController {
   @Autowired private ImageService imageService;
 
   @PostMapping("/upload")
-  public ResponseEntity<String> upload(ImageModel imageModel, @RequestParam String inventoryCode) {
+  public ImageAddResponse upload(
+      ImageAddRequest imageAddRequest, @RequestParam String inventoryCode) {
     try {
-      return imageService.uploadImage(imageModel, inventoryCode);
+      return imageService.uploadImage(imageAddRequest, inventoryCode);
     } catch (Exception e) {
       e.printStackTrace();
       return null;

@@ -30,7 +30,7 @@ public class CarAddRequest {
   private short modelYear;
 
   @NotNull(message = "{dailyPriceCannotBeLeftBlank}")
-  @Min(value = 500, message = "{dailPriceMinimumShouldBeFiveHundred.}")
+  @Min(value = 500, message = "{dailPriceMinimumShouldBeFiveHundred}")
   private Double dailyPrice;
 
   private Boolean state;
