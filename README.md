@@ -2,18 +2,32 @@
 <h1>TURKCELL BOOTCAMP RENT A CAR PROJEMİZ</h1>
 <br>
 <br>
-<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/Untitled_Diagram.drawio_1.png height=550 width=900><br><br>
+<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Untitled_Diagram.drawio_1.png height=550 width=900><br><br>
 
   
 </div>
-<h3>Projemiz servisler localde, Veritabaları ve Kafka  docker üzerinde çalıştırdığımız zaman sorunsuz çalışıyor ve isteklerimizi yerine getiriyor.<h3>
+<h3>Projemiz tamamen docker uzerinde calisabilir halde. Discovery Service'imiz Eureka Server'i kullaniyor ve Api Gateway projede dahil.<h3>
 
-### Projemizin Endpoint'lerini Görüntülemek İçin Linkler :
-- car-service'in Endpoint'leri için =  localhost:6002/swagger-ui/index.html
-- rantal-service'in Endpoint'leri için =  localhost:6001/swagger-ui/index.html
-- customer-service'in Endpoint'leri için =  localhost:6003/swagger-ui/index.html
+<div align="center">
 
+Eureka = localhost:8761 <br><br>
+<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(51).png height=550 width=900><br><br>
 
+ Car Service =  localhost:6002/swagger-ui/index.html <br><br>
+<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(52).png height=550 width=900><br><br>
+
+ Rental Service =  localhost:6001/swagger-ui/index.html <br><br>
+<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(63).png height=550 width=900><br><br>
+
+ Customer Service =  localhost:6003/swagger-ui/index.html <br><br>
+<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(53).png height=550 width=900><br><br>
+
+ Docker <br><br>
+<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(56).png height=550 width=900><br><br>
+
+ Keycloak = localhost=8080 <br><br>
+<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(64).png height=550 width=900><br><br>
+</div>
 
 ## Servislerinin Gerçekleştirdiği İşlemler
 
@@ -31,3 +45,4 @@
 - Aracın durumu 'true' dan 'false' a dönüyor.
 - Aracın kiralama ücreti müşterinin bakiyenden düşüyor ve müşterinin güncel bakiyesi PostgreSQL'deki customer-service tablosunda güncelleniyor
 - Kiralama ile ilgili mesaj notification-service üzerinden görüntüleniyor. 
+
