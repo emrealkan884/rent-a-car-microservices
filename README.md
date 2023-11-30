@@ -2,7 +2,7 @@
 <h1>TURKCELL BOOTCAMP RENT A CAR PROJEMİZ</h1>
 <br>
 <br>
-<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Untitled_Diagram.drawio_1.png height=550 width=900><br><br>
+<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Untitled_Diagram.drawio_1.png><br><br>
 
   
 </div>
@@ -10,24 +10,28 @@
 
 <div align="center">
 
-Eureka = localhost:8761 <br><br>
-<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(51).png height=550 width=900><br><br>
+ Eureka = localhost:8761 <br><br>
+<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(51).png ><br><br>
 
  Car Service =  localhost:6002/swagger-ui/index.html <br><br>
-<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(52).png height=550 width=900><br><br>
+<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(52).png ><br><br>
 
  Rental Service =  localhost:6001/swagger-ui/index.html <br><br>
-<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(63).png height=550 width=900><br><br>
+<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(63).png ><br><br>
 
  Customer Service =  localhost:6003/swagger-ui/index.html <br><br>
-<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(53).png height=550 width=900><br><br>
+<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(53).png ><br><br>
 
  Docker <br><br>
-<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(56).png height=550 width=900><br><br>
+<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(56).png ><br><br>
 
  Keycloak = localhost=8080 <br><br>
-<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(64).png height=550 width=900><br><br>
+<img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(64).png ><br><br>
+
 </div>
+
+### Diger resimlere erismek icin proje icindeki images klasoru altina gidebilirsiniz. <br><br>
+
 
 ## Servislerinin Gerçekleştirdiği İşlemler
 
