@@ -1,12 +1,12 @@
 <div align="center">
-<h1>TURKCELL BOOTCAMP RENT A CAR PROJEMİZ</h1>
+<h1>TURKCELL BOOTCAMP RENT A CAR PROJECT</h1>
 <br>
 <br>
 <img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Untitled_Diagram.drawio_1.png><br><br>
 
   
 </div>
-<h3>Projemiz tamamen docker uzerinde calisabilir halde. Discovery Service'imiz Eureka Server'i kullaniyor ve Api Gateway projede dahil.<h3>
+<h3>Our project is fully workable on docker. Our Discovery Service uses Eureka Server and Api Gateway is included in the project.<h3>
 
 <div align="center">
 
@@ -30,23 +30,23 @@
 
 </div>
 
-### Diger resimlere erismek icin proje icindeki images klasoru altina gidebilirsiniz. <br><br>
+### To access other images you can go to the images folder in the project.  <br><br>
 
 
-## Servislerinin Gerçekleştirdiği İşlemler
+## Operations Performed by Services
 
 ### car-service:
-- Araç ekleme, güncelleme, silme ve listeleme işlemlerini yapıyor.
-- Araçlar için Cloudinary kullanarak resim ekleyebiliyoruz.
+- All CRUD operation
+- We can add images using Cloudinary.
 
 ### costumer-service:
-- Müşterilerin kaydını yapıyor.
-- Müşteriler bakiye ekleyebiliyor ve çekebiliyor.
+- All CRUD operation
+- Customers can add and withdraw balances.
 
 ### rental-service:
-- Kiralama işlemi yapıyor. 
-- Kiralama işlemi yapılırken kiralanacak aracın durumuna, aracın günlük fiyatına ve kiralayacak müşterinin bakiyesine bakılıyor. Kiralanacak aracın durumu 'false' veya günlük kiralama ücreti müşterinin bakiyesinden büyükse 'Araç kiralamaya uygun değildir' dönüyor. Diğer türlü araç kiralanıyor.
-- Aracın durumu 'true' dan 'false' a dönüyor.
-- Aracın kiralama ücreti müşterinin bakiyenden düşüyor ve müşterinin güncel bakiyesi PostgreSQL'deki customer-service tablosunda güncelleniyor
-- Kiralama ile ilgili mesaj notification-service üzerinden görüntüleniyor. 
+- All CRUD operation
+- During the rental process, the status of the vehicle to be rented, the daily price of the vehicle and the balance of the customer to be rented are checked. If the status of the vehicle to be rented is 'false' or the daily rental fee is greater than the customer's balance, 'The vehicle is not suitable for renting' is returned. Otherwise, the vehicle is rented.
+- The status of the vehicle changes from 'true' to 'false'.
+- The rental price is calculated by multiplying the number of days rented by the daily price and deducted from the customer's balance. The customer's current balance is updated in the customer-service table in PostgreSQL.
+- The message about the rental is displayed via notification-service.  
 
