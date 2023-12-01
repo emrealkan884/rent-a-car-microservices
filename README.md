@@ -25,7 +25,7 @@
  Docker <br><br>
 <img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(56).png ><br><br>
 
- Keycloak = localhost=8080 <br><br>
+ Keycloak = localhost:8080 <br><br>
 <img src=https://github.com/emrealkan884/rent-a-car-microservices/blob/master/images/Screenshot%20(64).png ><br><br>
 
 </div>
